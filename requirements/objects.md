@@ -7,8 +7,8 @@ through the game will be required to access certain servers. Each server contain
 its own unique filesystem.
 
 object Server {
-  int ip;
-  Directory* root_dir;
+  int ip,
+  Directory* root_dir
 }
 
 ## Filesystems
@@ -17,7 +17,7 @@ Filesystem will consist of directories and files. The root directory will be the
 of the filesystem. Permissions will be assigned to each file/folder.
 
 object Directory {
-  File* files
+  File* files,
   Directory* subdirectories
 }
 
@@ -25,7 +25,7 @@ Directories will hold files. Files will be manipulated throughout the game.
 Directories may also contain other directories, subdirectories
 
 object File {
-  int id
+  int id,
   void* data
 }
 
