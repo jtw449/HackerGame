@@ -1,6 +1,6 @@
 # Planned Object Implementations
 
-[Home](../..)
+[Home](../blob/master)
 
 ## User
 
