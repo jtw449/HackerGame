@@ -42,7 +42,7 @@ class Directory {
     // searches the directory for the specified file, returns the file if exists
     for (file::iterator iter = this.files.begin(); iter != this.files.end(); iter++) {
 	   if (filename == iter.name) {
-       // update access_time 
+       // update access_time
        iter.access_time = time(nullptr);
        return iter;
      }
@@ -71,6 +71,8 @@ class Directory {
     }
     return nullptr;
   }
+
+  // TODO add more functionality through methods after implementation testing 
 
   private:
     string name;
