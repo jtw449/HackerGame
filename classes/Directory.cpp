@@ -109,4 +109,4 @@ class Directory {
       return nullptr;
     }
 
-}
+} dir;
