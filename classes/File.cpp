@@ -55,4 +55,4 @@ class File {
 			return true;
 		}
 
-} file;
+}

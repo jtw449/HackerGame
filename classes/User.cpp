@@ -51,4 +51,4 @@ class User {
 			return superUser;
 		}
 
-} user;
+}

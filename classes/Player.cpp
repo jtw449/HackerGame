@@ -99,4 +99,4 @@ class Player {
 			Server temp = *serverList.back();
 			return temp.getServerName();
 		}
-} player;
+}
