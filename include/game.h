@@ -3,4 +3,5 @@
 #include <list>
 #include <ctime>
 
-using namespace std;
+using namespace std::string;
+using namespace std::list;
