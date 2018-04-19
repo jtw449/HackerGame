@@ -3,6 +3,23 @@
 
 #include "include/classes.hpp"
 
+Commands hashit(std::string const& inString);
+
+enum Commands {
+	cd,
+	ls,
+	rm,
+	mv,
+	cp,
+	touch,
+	cat,
+	su,
+	ssh,
+	logout,
+	clear,
+	error
+};
+
 int main() {
 	string username;
 	string password1;
@@ -107,4 +124,19 @@ int main() {
 	}
 
 	return 0;
+}
+
+Commands hashit(std::string const& inString) {
+	if (inString == "cd") return cd;
+	if (inString == "ls") return ls;
+	if (inString == "rm") return rm;
+	if (inString == "mv") return mv;
+	if (inString == "cp") return cp;
+	if (inString == "touch") return touch;
+	if (inString == "cat") return cat;
+	if (inString == "su") return su;
+	if (inString == "ssh") return ssh;
+	if (inString == "logout") return logout;
+	if (inString == "clear") return clear;
+	return error;
 }
