@@ -10,6 +10,13 @@
 using std::string;
 using std::list;
 
+class Permissions;
+class User;
+class Player;
+class File;
+class Directory;
+//class Server;
+
 class Permissions {
 	private:
 		bool worldRead;
