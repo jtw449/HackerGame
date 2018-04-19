@@ -257,6 +257,24 @@ class Player {
       Server temp = *serverList.back();
       return temp.getServerName();
     }
+	
+    string getCurrentDirectoryName() {
+	User temp = *userList.back();
+	Directory tempdir = *temp.getDirectory();
+	return tempdir.getDirectoryName();
+    }
+
+    bool getCurrentUserRoot() {
+	User temp = *userList.back();
+	return temp.getSuperUser();
+    }
+
+    string getSuffix() {
+	if (getCurrentUserRoot()) { suffix = "#"; }
+	else if (!getCurrentUserRoot()) { suffix = "$"; }
+
+	return suffix;
+    }
 };
 
 class Directory {
