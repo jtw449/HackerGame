@@ -18,7 +18,8 @@ class User;
 class Player;
 class File;
 class Directory;
-//class Server;
+class Server;
+
 
 class Permissions {
 	private:
@@ -48,6 +49,7 @@ class Permissions {
 		void setUserExecute(bool userExecute) { this->userExecute = userExecute; }
 		bool getUserExecute() { return userExecute; }
 };
+
 
 class User {
   private:
@@ -101,6 +103,7 @@ class User {
       return superUser;
     }
 };
+
 
 class File {
   private:
@@ -158,6 +161,7 @@ class File {
       return true;
     }
 };
+
 
 class Player {
   private:
@@ -280,6 +284,7 @@ class Player {
     }
 };
 
+
 class Directory {
   private:
     string name;
@@ -377,6 +382,107 @@ class Directory {
       }
       return nullptr;
     }
+};
+
+
+class Server {
+
+private:
+  string IP;
+  Directory* rootDirectory;
+  std::list<User> Accounts;
+  bool SSH;
+
+  Directory* validatePath(vector<string>* folderList, Directory* curDir) {
+    if (!folderList || !curDir) return nullptr;
+
+    for (Directory folder : *folderList) {
+      curDir = curDir.get_dir(folder);
+      if (!curDir) return nullptr;
+    }
+    return curDir;
+  }
+
+  vector<string>* parsePath(string path) {
+    //check path for invalid chars
+    if(str.find('\"') || str.find('\'') || str.find('\n') || str.find('\\')) {
+      return nullptr;
+    }
+
+    vector<string>* nameList = new vector<string>();
+    std::size_t base, next = 0;
+    //iterate through string and push folder names onto end of vector
+    while(next != string::npos) {
+      nameList.push_back( path.substr(base+1, next-base) );
+      base = next;
+      next = path.find('/', base+1);
+    }
+    nameList.push_back( path.substr(base+1, path.length()) );
+    return nameList;
+  }
+
+public:
+  Server(string IP, std::list<User> userList) {
+    this.IP = IP;
+    this.rootDirectory = new Directory();
+    this.accounts = userList;
+    this.SSH = true;
+  }
+  ~Server() {
+    delete this.rootDirectory;
+    for(User user : this.Accounts) {
+      delete user;
+    }
+  }
+
+  User* connect(string username, string password) {
+    for(User user : this.Accounts) {
+      if (user.username == username && user.password == password) {
+        return true;
+      }
+    }
+  }
+  string ls(string path) {
+
+  }
+  void cd(User* user, string path) {
+    Directory* startingDir;
+    if(path.at(0) == '/') { // if path starts at root folder
+      startingDir = this->rootDirectory;
+    } else {
+      startingDir = user.getDirectory();
+    }
+
+    Directory* endFolder = validatePath( parsePath(path), startingDir );
+
+    if (!endFolder) return nullptr;
+    //make cd adjustments
+  }
+  void touch(string path) {
+
+  }
+  void mv(string src, string dest) {
+
+  }
+  void cp(string src, string dest) {
+
+  }
+  void rm(string path) {
+
+  }
+  string cat(string path) {
+
+  }
+  void sudo(string cmd, string password) {
+
+  }
+  void su(string password) {
+
+  }
+  void clear() {
+
+  }
+
 };
 
 #endif
