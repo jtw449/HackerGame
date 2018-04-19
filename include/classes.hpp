@@ -6,6 +6,8 @@
 #include <list>
 #include <ctime>
 #include <string>
+#include <sstream>
+#include <vector>
 
 using std::string;
 using std::list;
