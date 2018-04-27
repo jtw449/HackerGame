@@ -164,124 +164,93 @@ class File {
 
 
 class Player {
-  private:
-    list <User*> userList;
-    list <User*>::iterator userListIter;
+private:
 
-    // list <Server*> serverList;
-    // list <Server*>::iterator serverListIter;
+	list < pair<User*, Server*> > connectionList;
 
-    void addUser(User* newUser) {
-      userList.push_back(newUser);
-    }
+	pair<User*, Server*> connectionPair;
 
-    bool removeUser() {
-      if (userList.size() > 1) {
-        userListIter = userList.end();
-        userList.erase(userListIter);
+	string suffix;
 
-        return true;
-      }
-      else {
-        return false;
-      }
-    }
+	void addConnection(User* user, Server* server) {
+		connectionList.push_back(make_pair(user, server));
+	}
 
-    // void addServer(Server* newServer) {
-    // 	serverList.push_back(newServer);
-    // }
+	bool removeConnection() {
+		if (connectionList.size() > 1) {
+			connectionList.erase(connectionList.end());
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 
-    bool removeServer() {
-      if (serverList.size() > 1) {
-        serverListIter = serverList.end();
-        serverList.erase(serverListIter);
+	pair<User*, Server*> getCurrentConnection() {
+		connectionPair = connectionList.back();
+		return connectionPair;
+	}
 
-        return true;
-      }
-      else {
-        return false;
-      }
-    }
+public:
+	Player() {
 
+	}
 
-  public:
-    Player() {
+	Player(string username, string password, Directory* workingDir, Server* newServer) {
+		User* player = new User(username, password, workingDir);
+		addConnection(player, newServer);
+	}
 
-    }
+	void serverLogin(User* newUser, Server* newServer) {
+		addConnection(newUser, newServer);
+	}
 
-    // Player(string username, string password, Directory* workingDir, Server* newServer) {
-    // 	User* player = new User(username, password, workingDir);
-    // 	addUser(player);
-    // 	addServer(newServer);
-    // }
+	bool serverLogout() {
+		if (removeConnection())
+			return true;
+		else
+			return false;
+	}
 
-    // void serverLogin(User* newUser, Server* newServer) {
-    // 	addUser(newUser);
-    // 	addServer(newServer);
-    // }
+	User* getCurrentUser() {
+		if (!connectionList.empty()) {
+			return get<0>(getCurrentConnection());
+	 	}
+	 }
 
-    bool serverLogout() {
-      if (removeServer() && removeUser())
-        return true;
-      else
-        return false;
-    }
+	Server* getCurrentServer() {
+		if (!connectionList.empty()) {
+			return get<1>(getCurrentConnection());
+		}
+	}
 
-    bool userLogin(User* newUser) {
-      if (userList.size() == 1) {
-        addUser(newUser);
-        return true;
-      }
-      else {
-        if (removeUser()) {
-          addUser(newUser);
-          return true;
-        }
-        else {
-          return false;
-        }
-      }
-    }
+	string getCurrentUsername() {
+		User temp = *get<0>(getCurrentConnection());
+		return temp.getUsername();
+	}
 
-    // User* getCurrentUser() {
-    // 	if (!userList.empty()) {
-    // 		return userList.back();
-    // 	}
-    // }
+	string getCurrentServerName() {
+		Server temp = *get<1>(getCurrentConnection());
+		return temp.getServerName();
+	}
 
-    Server* getCurrentServer() {
-      if (!serverList.empty()) {
-        return serverList.back();
-      }
-    }
+	string getCurrentDirectoryName() {
+		User temp = *get<0>(getCurrentConnection());
+		Directory tempdir = *temp.getDirectory();
+		return tempdir.getDirectoryName();
+	}
 
-    string getCurrentUsername() {
-      User temp = *userList.back();
-      return temp.getUsername();
-    }
+	bool getCurrentUserRoot() {
+		User temp = *get<0>(getCurrentConnection());
+		return temp.getSuperUser();
+	}
 
-    string getCurrentServerName() {
-      Server temp = *serverList.back();
-      return temp.getServerName();
-    }
-	
-    string getCurrentDirectoryName() {
-	User temp = *userList.back();
-	Directory tempdir = *temp.getDirectory();
-	return tempdir.getDirectoryName();
-    }
+	string getSuffix() {
+		if (getCurrentUserRoot()) { suffix = "#"; }
+		else if (!getCurrentUserRoot()) { suffix = "$"; }
 
-    bool getCurrentUserRoot() {
-	User temp = *userList.back();
-	return temp.getSuperUser();
-    }
-
-    string getSuffix() {
-	if (getCurrentUserRoot()) { suffix = "#"; }
-	else if (!getCurrentUserRoot()) { suffix = "$"; }
-
-	return suffix;
-    }
+		return suffix;
+	}
 };
 
 
