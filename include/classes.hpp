@@ -443,6 +443,7 @@ public:
       }
     }
   }
+
   string ls(string absPath) {
     Directory* folder = validatePath(absPath);
     if (!folder) return "";
@@ -468,9 +469,18 @@ public:
     user.setWorkingDir(folder);
   }
 
-  void touch(string absPath) {
-    Directory* folder = validatePath(absPath);
+  bool touch(User* user, string absPath) {
+    if (absPath.back() == '/') {
+      return false;
+    }
+    std::size_t base = absPath.rfind("/") + 1;
+    string name = absPath.substr(base, absPath.length() - base);
+
+    Directory* folder = validatePath( absPath.substr(absPath.length()-name.length(), base-1) );
     if (!folder) return false;
+
+    File* new_file = new File(name, "", nullptr, user);
+    folder->add_file(new_file);
   }
 
   void mkdir(User* user, string absPath) {
