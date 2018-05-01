@@ -8,9 +8,9 @@ is being performed iteratively and incrementally in adherence to
 
 ## Team Members
 
-* Zachary Dobbs
+* Trevor Leach - Product Owner
+* Zachary Dobbs - Scrum Master
 * Jeremiah Wooten
-* Trevor Leach
 * Will Givens
 
 ## More Information
