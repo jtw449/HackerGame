@@ -130,6 +130,10 @@ class File {
     string getName() {
       return this->name;
     }
+	
+    string get_contents() {
+      return data;
+    }
 
     bool set_name(string file_name) {
       this->name = file_name;
