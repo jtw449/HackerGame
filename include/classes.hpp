@@ -127,6 +127,10 @@ class File {
       this->owner = file_owner;
     }
 
+    string getName() {
+      return this->name;
+    }
+
     bool set_name(string file_name) {
       this->name = file_name;
       this->change_time = time(nullptr);
@@ -290,6 +294,10 @@ class Directory {
       delete this->sub_dirs;
     }
 
+    string getName() {
+      return this->name;
+    }
+
     bool add_file(File* new_file) {
       // add a file to the directory
       this->files.push_back(new_file);
@@ -439,7 +447,18 @@ public:
     Directory* folder = validatePath(absPath);
     if (!folder) return "";
 
+    list<Directory*> dirs = folder->get_sub_dirs();
+    list<File*> files = folder->get_files();
 
+    string ls = "";
+    for (Directory* dir : dirs) {
+      ls.append(dir->getName());
+      ls += "/\n";
+    }
+    for (File* file : files) {
+      ls.append(file->getName());
+      ls += '\n';
+    }
   }
 
   bool cd(User* user, string absPath) {

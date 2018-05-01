@@ -27,20 +27,20 @@ int main() {
 	string input;
 	bool playing = true;
 
-	cout << "Welcome to the game etc...";
+	std::cout << "Welcome to the game etc...";
 
-	cout << "\n\nNew account setup" << "\nPlease enter username: ";
-	cin >> username;
+	std::cout << "\n\nNew account setup" << "\nPlease enter username: ";
+	std::cin >> username;
 
 	do {
-		cout << "\nPlease enter password: ";
-		cin >> password1;
+		std::cout << "\nPlease enter password: ";
+		std::cin >> password1;
 
-		cout << "Please verify password: ";
-		cin >> password2;
+		std::cout << "Please verify password: ";
+		std::cin >> password2;
 
 		if (password1 != password2) {
-			cout << "\nPasswords do not match!";
+			std::cout << "\nPasswords do not match!";
 		}
 	} while (password1 != password2);
 
@@ -51,16 +51,16 @@ int main() {
 
 	Player* player = new Player(username, password1, thisIsAPlaceHolder, homeServer);
 
-	cin.ignore(INT_MAX, '\n');
+	std::cin.ignore(INT_MAX, '\n');
 
 	while (playing == true) {
 
-		cout << "[" << player->getCurrentUsername() << "@" << player->getCurrentServerName() << " " << player->getCurrentDirectoryName() << "]" << player->getSuffix() << " ";
-		getline(cin, input);
+		std::cout << "[" << player->getCurrentUsername() << "@" << player->getCurrentServerName() << " " << player->getCurrentDirectoryName() << "]" << player->getSuffix() << " ";
+		std::getline(std::cin, input);
 
 		vector <string> tokens;
 
-		stringstream check(input);
+		std::stringstream check(input);
 
 		string buffer;
 
@@ -113,11 +113,11 @@ int main() {
 				break;
 
 			case clear:
-				cout << string(100, '\n');
+				std::cout << string(100, '\n');
 				break;
 
 			case error:
-				cout << "Command not found.\n";
+				std::cout << "Command not found.\n";
 				break;
 			}
 		}
