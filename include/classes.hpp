@@ -12,6 +12,8 @@
 using std::string;
 using std::list;
 using std::vector;
+using std::pair;
+using std::get;
 
 class Permissions;
 class User;
@@ -52,56 +54,56 @@ class Permissions {
 
 
 class User {
-  private:
-    string username;
-    string password;
-    // Directory* workingDir;
-    list<string> history;
-    bool superUser = false;
+private:
+	string username;
+	string password;
+	Directory* workingDir;
+	list<string> history;
+	bool superUser = false;
 
-  public:
-    User() {
+public:
+	User() {
 
-    }
+	}
 
-    User(string username, string password) {
-      this->username = username;
-      this->password = password;
-    }
+	User(string username, string password) {
+		this->username = username;
+		this->password = password;
+	}
 
-    // User(string username, string password, Directory* workingDir) {
-    // 	this->username = username;
-    // 	this->password = password;
-    // 	this->workingDir = workingDir;
-    // }
+	User(string username, string password, Directory* workingDir) {
+	 	this->username = username;
+		this->password = password;
+		this->workingDir = workingDir;
+	}
 
-    string getUsername() {
-      return username;
-    }
+	string getUsername() {
+		return username;
+	}
 
-    // void setDirectory(Directory* workingDir) {
-    // 	this->workingDir = workingDir;
-    // }
+	void setDirectory(Directory* workingDir) {
+		this->workingDir = workingDir;
+	}
 
-    // Directory* getDirectory() {
-    // 	return workingDir;
-    // }
+    	Directory* getDirectory() {
+		return workingDir;
+    	}
 
-    void addHistory(string command) {
-      history.push_back(command);
-    }
+	void addHistory(string command) {
+		history.push_back(command);
+	}
 
-    list<string> getHistory() {
-      return history;
-    }
+	list<string> getHistory() {
+		return history;
+	}
 
-    void setSuperUser(bool superUser) {
-      this->superUser = superUser;
-    }
+	void setSuperUser(bool superUser) {
+		this->superUser = superUser;
+	}
 
-    bool getSuperUser() {
-      return superUser;
-    }
+	bool getSuperUser() {
+		return superUser;
+	}
 };
 
 
@@ -177,7 +179,7 @@ private:
 	string suffix;
 
 	void addConnection(User* user, Server* server) {
-		connectionList.push_back(make_pair(user, server));
+		connectionList.push_back(std::make_pair(user, server));
 	}
 
 	bool removeConnection() {
@@ -190,7 +192,7 @@ private:
 		}
 	}
 
-	pair<User*, Server*> getCurrentConnection() {
+	pair <User*, Server*> getCurrentConnection() {
 		connectionPair = connectionList.back();
 		return connectionPair;
 	}
@@ -219,8 +221,8 @@ public:
 	User* getCurrentUser() {
 		if (!connectionList.empty()) {
 			return get<0>(getCurrentConnection());
-	 	}
-	 }
+		}
+	}
 
 	Server* getCurrentServer() {
 		if (!connectionList.empty()) {
@@ -234,14 +236,14 @@ public:
 	}
 
 	string getCurrentServerName() {
-		Server temp = *get<1>(getCurrentConnection());
-		return temp.getServerName();
+		Server tempSvr = *get<1>(getCurrentConnection());
+		return tempSvr.getIP();
 	}
 
 	string getCurrentDirectoryName() {
 		User temp = *get<0>(getCurrentConnection());
 		Directory tempdir = *temp.getDirectory();
-		return tempdir.getDirectoryName();
+		return tempdir.get_name();
 	}
 
 	bool getCurrentUserRoot() {
@@ -478,16 +480,20 @@ public:
     if (!folder) return false;
   }
 
-  void mkdir(string absPath) {
+  void mkdir(User* user, string absPath) {
 		if (absPath.back() == '/') {
 			absPath.pop_back();
 		}
 		std::size_t found = absPath.rfind("/");
+		if (found == std::npos) return;
 		string filename;
-		strcpy(filename, (absPath+filename))
-    Directory* folder = validatePath(absPath);
-    if (!folder) return false;
-
+		strcpy(filename, (absPath+found));
+		string relPath;
+		strncpy(relPath, absPath, found);
+    Directory* folder = validatePath(relPath);
+    if (!folder) return;
+		Directory new_dir = new Directory(filename, folder, nullptr, user->getUsername());
+		folder.add_dir(new_dir);
   }
 
   void mv(string src, string dest) {
