@@ -351,6 +351,14 @@ class Directory {
       }
       return nullptr;
     }
+
+		list<File*> get_files() {
+			return this->files;
+		}
+
+		list<Directory*> get_sub_dirs() {
+			return this->sub_dirs;
+		}
 };
 
 
