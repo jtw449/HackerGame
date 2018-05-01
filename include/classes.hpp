@@ -393,13 +393,19 @@ private:
   std::list<User> Accounts;
   bool SSH;
 
-  Directory* validatePath(vector<string>* folderList, Directory* curDir) {
-    if (!folderList || !curDir) return nullptr;
+  Directory* validatePath(string path) {
+    if (!path) return nullptr;
 
+    vector<string>* folderList = parsePath(path);
+    if (!folderList) return nullptr;
+
+    Directory* curDir = nullptr;
     for (Directory folder : *folderList) {
       curDir = curDir.get_dir(folder);
       if (!curDir) return nullptr;
     }
+
+    delete folderList;
     return curDir;
   }
 
@@ -445,7 +451,8 @@ public:
   string ls(string path) {
 
   }
-  void cd(User* user, string path) {
+
+  bool cd(User* user, string path) {
     Directory* startingDir;
     if(path.at(0) == '/') { // if path starts at root folder
       startingDir = this->rootDirectory;
@@ -453,11 +460,14 @@ public:
       startingDir = user.getDirectory();
     }
 
-    Directory* endFolder = validatePath( parsePath(path), startingDir );
+    Directory* folder = validatePath(path);
+    Directory* folder = validatePath( parsePath(path), startingDir );
 
-    if (!endFolder) return nullptr;
-    //make cd adjustments
+    if (!folder) return false;
+
+    user.setWorkingDir(folder);
   }
+
   void touch(string path) {
 
   }
