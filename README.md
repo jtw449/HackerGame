@@ -28,12 +28,13 @@ This foundation that we have created leads to a plethora of possibilities that w
 hope to explore in the future. We will continue working together down the road
 to hopefully put together our original goal. Overall, this project acquainted our
 team with the Scrum methodology. The project occurred over 5 week-long sprints.
-Without following the iterative and incremental approaches of our Agile process, it would not 
+Without following the iterative and incremental approaches of our Agile process, it would not
 have been possible for us to complete this project.
 
 ## More Information
 
 [Object Drafts](requirements/objects.md)
+
 [Non Functional Requirements](requirements/nonFunctionalRequirements.md)
 
 ### VIDEO DEMO
