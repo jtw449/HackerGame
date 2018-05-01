@@ -412,16 +412,20 @@ private:
 
 public:
   Server(string IP, std::list<User> userList) {
-    this.IP = IP;
-    this.rootDirectory = new Directory();
-    this.accounts = userList;
-    this.SSH = true;
+    this->IP = IP;
+    this->rootDirectory = new Directory();
+    this->accounts = userList;
+    this->SSH = true;
   }
   ~Server() {
     delete this.rootDirectory;
     for(User user : this.Accounts) {
       delete user;
     }
+  }
+
+  string getIP() {
+    return this->IP;
   }
 
   User* connect(string username, string password) {
@@ -431,6 +435,7 @@ public:
       }
     }
   }
+
   string ls(string absPath) {
     Directory* folder = validatePath(absPath);
     if (!folder) return "";
@@ -467,15 +472,15 @@ public:
   string cat(string absPath) {
     
   }
-  void sudo(string cmd, string password) {
+  // void sudo(string cmd, string password) {
 
-  }
-  void su(string password) {
+  // }
+  // void su(string password) {
 
-  }
-  void clear() {
+  // }
+  // void clear() {
 
-  }
+  // }
 
 };
 
