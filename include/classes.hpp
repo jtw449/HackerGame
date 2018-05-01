@@ -352,6 +352,10 @@ class Directory {
       return nullptr;
     }
 
+		string get_name() {
+			return this->name;
+		}
+
 		list<File*> get_files() {
 			return this->files;
 		}
@@ -435,7 +439,7 @@ public:
     Directory* folder = validatePath(absPath);
     if (!folder) return "";
 
-    
+
   }
 
   bool cd(User* user, string absPath) {
@@ -451,8 +455,15 @@ public:
   }
 
   void mkdir(string absPath) {
+		if (absPath.back() == '/') {
+			absPath.pop_back();
+		}
+		std::size_t found = absPath.rfind("/");
+		string filename;
+		strcpy(filename, (absPath+filename))
     Directory* folder = validatePath(absPath);
     if (!folder) return false;
+
   }
 
   void mv(string src, string dest) {
@@ -465,7 +476,7 @@ public:
 
   }
   string cat(string absPath) {
-    
+
   }
   void sudo(string cmd, string password) {
 
