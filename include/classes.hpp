@@ -345,7 +345,7 @@ class Directory {
       for (Directory* dir : this->sub_dirs) {
        if (dir_name == dir->name) {
          // update access_time
-         dir->access_time = time(nullptr);
+         dir->access_time = time(nullptr);  //probably don't want to update access time here. Should be done in the command functions in Server
          return dir;
        }
       }
@@ -362,38 +362,44 @@ private:
   std::list<User> Accounts;
   bool SSH;
 
-  Directory* validatePath(string path) {
-    if (!path) return nullptr;
-
-    vector<string>* folderList = parsePath(path);
-    if (!folderList) return nullptr;
-
-    Directory* curDir = nullptr;
-    for (Directory folder : *folderList) {
-      curDir = curDir.get_dir(folder);
-      if (!curDir) return nullptr;
-    }
-
-    delete folderList;
-    return curDir;
-  }
-
-  vector<string>* parsePath(string path) {
-    //check path for invalid chars
+  vector<string>* parsePath(string absPath) {
+    //check absPath for invalid chars
     if(str.find('\"') || str.find('\'') || str.find('\n') || str.find('\\')) {
       return nullptr;
     }
 
+    //setup for absPath parsing
     vector<string>* nameList = new vector<string>();
-    std::size_t base, next = 0;
+    std::size_t base = 1, next = 0;
+    next = absPath.find('/', base);
+
     //iterate through string and push folder names onto end of vector
     while(next != string::npos) {
-      nameList.push_back( path.substr(base+1, next-base) );
-      base = next;
-      next = path.find('/', base+1);
+      nameList.push_back( absPath.substr(base, next-base) );
+      base = next+1;
+      next = absPath.find('/', base);
     }
-    nameList.push_back( path.substr(base+1, path.length()) );
+
     return nameList;
+  }
+
+  //only send the path portion to this function, WITH a trailing '/' but without a trailing filename
+  Directory* validatePath(string absPath) {
+    if (!absPath) return nullptr;
+    if (absPath.at(0) != '/') return nullptr;
+    if (absPath.back() != '/') return nullptr;
+
+    vector<string>* folderList = parsePath(absPath);
+    if (!folderList || folderList->empty()) return nullptr;
+
+    Directory* curDir = this->rootDirectory;
+    for (Directory folderName : *folderList) {
+      curDir = curDir.get_dir(folderName);
+      if (!curDir) return nullptr;
+    }
+
+    delete *folderList;
+    return curDir;
   }
 
 public:
@@ -417,40 +423,41 @@ public:
       }
     }
   }
-  string ls(string path) {
+  string ls(string absPath) {
+    Directory* folder = validatePath(absPath);
+    if (!folder) return "";
 
+    
   }
 
-  bool cd(User* user, string path) {
-    Directory* startingDir;
-    if(path.at(0) == '/') { // if path starts at root folder
-      startingDir = this->rootDirectory;
-    } else {
-      startingDir = user.getDirectory();
-    }
-
-    Directory* folder = validatePath(path);
-    Directory* folder = validatePath( parsePath(path), startingDir );
-
+  bool cd(User* user, string absPath) {
+    Directory* folder = validatePath(absPath);
     if (!folder) return false;
 
     user.setWorkingDir(folder);
   }
 
-  void touch(string path) {
-
+  void touch(string absPath) {
+    Directory* folder = validatePath(absPath);
+    if (!folder) return false;
   }
+
+  void mkdir(string absPath) {
+    Directory* folder = validatePath(absPath);
+    if (!folder) return false;
+  }
+
   void mv(string src, string dest) {
 
   }
   void cp(string src, string dest) {
 
   }
-  void rm(string path) {
+  void rm(string absPath) {
 
   }
-  string cat(string path) {
-
+  string cat(string absPath) {
+    
   }
   void sudo(string cmd, string password) {
 
