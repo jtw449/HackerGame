@@ -132,7 +132,7 @@ class File {
     }
 	
     string get_contents() {
-      return data;
+      return this->data;
     }
 
     bool set_name(string file_name) {
