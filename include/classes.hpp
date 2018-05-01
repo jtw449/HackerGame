@@ -386,7 +386,7 @@ private:
 
   vector<string>* parsePath(string absPath) {
     //check absPath for invalid chars
-    if(str.find('\"') || str.find('\'') || str.find('\n') || str.find('\\')) {
+    if(absPath.find('\"') || absPath.find('\'') || absPath.find('\n') || absPath.find('\\')) {
       return nullptr;
     }
 
@@ -397,7 +397,7 @@ private:
 
     //iterate through string and push folder names onto end of vector
     while(next != string::npos) {
-      nameList.push_back( absPath.substr(base, next-base) );
+      nameList->push_back( absPath.substr(base, next-base) );
       base = next+1;
       next = absPath.find('/', base);
     }
@@ -407,7 +407,7 @@ private:
 
   //only send the path portion to this function, WITH a trailing '/' but without a trailing filename
   Directory* validatePath(string absPath) {
-    if (!absPath) return nullptr;
+    if (absPath.empty()) return nullptr;
     if (absPath.at(0) != '/') return nullptr;
     if (absPath.back() != '/') return nullptr;
 
@@ -415,7 +415,7 @@ private:
     if (!folderList || folderList->empty()) return nullptr;
 
     Directory* curDir = this->rootDirectory;
-    for (Directory folderName : *folderList) {
+    for (string folderName : *folderList) {
       curDir = curDir.get_dir(folderName);
       if (!curDir) return nullptr;
     }
@@ -432,8 +432,8 @@ public:
     this->SSH = true;
   }
   ~Server() {
-    delete this.rootDirectory;
-    for(User user : this.Accounts) {
+    delete this->rootDirectory;
+    for(User user : this->Accounts) {
       delete user;
     }
   }
@@ -443,7 +443,7 @@ public:
   }
 
   User* connect(string username, string password) {
-    for(User user : this.Accounts) {
+    for(User user : this->Accounts) {
       if (user.username == username && user.password == password) {
         return true;
       }
