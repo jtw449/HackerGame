@@ -454,16 +454,20 @@ public:
     if (!folder) return false;
   }
 
-  void mkdir(string absPath) {
+  void mkdir(User* user, string absPath) {
 		if (absPath.back() == '/') {
 			absPath.pop_back();
 		}
 		std::size_t found = absPath.rfind("/");
+		if (found == std::npos) return;
 		string filename;
-		strcpy(filename, (absPath+filename))
-    Directory* folder = validatePath(absPath);
-    if (!folder) return false;
-
+		strcpy(filename, (absPath+found));
+		string relPath;
+		strncpy(relPath, absPath, found);
+    Directory* folder = validatePath(relPath);
+    if (!folder) return;
+		Directory new_dir = new Directory(filename, folder, nullptr, user->getUsername());
+		folder.add_dir(new_dir);
   }
 
   void mv(string src, string dest) {
