@@ -66,7 +66,7 @@ int main() {
 
 	while (playing == true) {
 
-		std::cout << "[" << player->getCurrentUsername() << "@" << player->getCurrentServer()->getIP() << " " << player->getCurrentDirectoryName() << "]" << player->getSuffix() << " ";
+		std::cout << "[" << player->getCurrentUsername() << "@" << player->getCurrentServer()->getIP() << " " /*<< player->getCurrentDirectoryName()*/ << "]" << player->getSuffix() << " ";
 		std::getline(std::cin, input);
 
 		vector <string> tokens;
