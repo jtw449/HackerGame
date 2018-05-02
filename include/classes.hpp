@@ -393,6 +393,7 @@ public:
         return user;
       }
     }
+		return nullptr;
   }
 
   string ls(string absPath) {
@@ -411,6 +412,7 @@ public:
       ls.append(file->getName());
       ls += '\n';
     }
+		return ls;
   }
 
   bool cd(User* user, string absPath) {
@@ -418,6 +420,7 @@ public:
     if (!folder) return false;
 
     user->setWorkingDir(folder);
+		return true;
   }
 
   bool touch(User* user, string absPath) {
@@ -432,6 +435,7 @@ public:
 
     File* new_file = new File(name, "", nullptr, user);
     folder->add_file(new_file);
+		return true;
   }
 
   bool mkdir(User* user, string absPath) {
@@ -597,12 +601,14 @@ public:
     if (!connectionList.empty()) {
       return std::get<0>(getCurrentConnection());
     }
+		return nullptr;
    }
 
   Server* getCurrentServer() {
     if (!connectionList.empty()) {
       return std::get<1>(getCurrentConnection());
     }
+		return nullptr;
   }
 
   string getCurrentUsername() {
