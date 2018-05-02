@@ -62,16 +62,10 @@ int main() {
 	player->getCurrentUser()->setWorkingDir(server1->getRootDir());
 
 	std::cin.ignore(INT_MAX, '\n');
-	
-	std::cout << "[" << player->getCurrentUsername() << 
-		"@" << player->getCurrentServerIP() << 
-		//" " << player->getCurrentDirectoryName() << 
-		//"]" << player->getSuffix() << 
-		" ";
 
 	while (playing == true) {
 
-		//std::cout << "[" << player->getCurrentUsername() << "@" << player->getCurrentServerIP() << " " << player->getCurrentDirectoryName() << "]" << player->getSuffix() << " ";
+		std::cout << "[" << player->getCurrentUsername() << "@" << player->getCurrentServer()->getIP() << " " << player->getCurrentDirectoryName() << "]" << player->getSuffix() << " ";
 		std::getline(std::cin, input);
 
 		vector <string> tokens;
