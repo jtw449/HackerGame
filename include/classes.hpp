@@ -342,7 +342,7 @@ private:
 
   //only send the path portion to this function, WITH a trailing '/' but without a trailing filename
   Directory* validatePath(string absPath) {
-    if (absPath.empty()) return nullptr;
+    if (absPath.empty()) return this->rootDirectory;
     if (absPath.at(0) != '/') return nullptr;
     if (absPath.back() != '/') return nullptr;
 
@@ -355,7 +355,7 @@ private:
       if (!curDir) return nullptr;
     }
 
-    delete folderList;
+    // delete folderList;
     return curDir;
   }
 
@@ -405,12 +405,14 @@ public:
 
     string ls;
     for (Directory* dir : dirs) {
-      ls.append(dir->getName());
-      ls += "/\n";
+      std::cout << dir->getName() << "/\n";
+      // ls.append(dir->getName());
+      // ls += "/\n";
     }
     for (File* file : files) {
-      ls.append(file->getName());
-      ls += '\n';
+      std::cout << file->getName() << std::endl;
+      // ls.append(file->getName());
+      // ls += '\n';
     }
 		return ls;
   }

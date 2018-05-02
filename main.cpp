@@ -86,7 +86,7 @@ int main() {
 			case cd:
 				if (tokens.size() >= 2) {
 					std::cout << tokens[1];
-				}				
+				}
 				break;
 
 			case ls:
@@ -98,7 +98,14 @@ int main() {
 				break;
 
 			case mkdir:
-
+				if (2 == tokens.size()) {
+					std::cout << "Creating...\n";
+					if (server1->mkdir(player->getCurrentUser(), tokens[1])) {
+						std::cout << "Created\n";
+					}
+				} else {
+					std::cout << "Error\n";
+				}
 				break;
 
 			case rm:
