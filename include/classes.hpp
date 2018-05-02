@@ -614,27 +614,27 @@ public:
   }
 
   string getCurrentUsername() {
-    User temp = *std::get<0>(getCurrentConnection());
-    return temp.getUsername();
+    User* temp = std::get<0>(getCurrentConnection());
+    return temp->getUsername();
   }
 
   string getCurrentServerIP() {
-    Server temp = *std::get<1>(getCurrentConnection());
-    return temp.getIP();
+    Server* temp = std::get<1>(getCurrentConnection());
+    return temp->getIP();
   }
 
   string getCurrentDirectoryName() {
-    User temp = *std::get<0>(getCurrentConnection());
-    Directory tempdir = *temp.getDirectory();
-	if (tempdir.getName() == "") {
-		return "/";
-	}
-	return tempdir.getName();
+    User* temp = std::get<0>(getCurrentConnection());
+    Directory* tempdir = temp->getDirectory();
+  	if (tempdir->getName() == "") {
+  		return "/";
+  	}
+  	return tempdir->getName();
   }
 
   bool getCurrentUserRoot() {
-    User temp = *std::get<0>(getCurrentConnection());
-    return temp.getSuperUser();
+    User* temp = std::get<0>(getCurrentConnection());
+    return temp->getSuperUser();
   }
 
   string getSuffix() {
