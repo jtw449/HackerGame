@@ -368,7 +368,7 @@ private:
 public:
   Server(string IP, std::list<User*> userList) {
     this->IP = IP;
-    this->rootDirectory = new Directory("root", nullptr, nullptr, userList.front());
+    this->rootDirectory = new Directory("", nullptr, nullptr, userList.front());
     this->Accounts = userList;
     this->SSH = true;
   }
