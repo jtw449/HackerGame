@@ -87,6 +87,7 @@ int main() {
 				if (tokens.size() >= 2) {
 					server1->cd(player->getCurrentUser(), tokens[1]);
 					break;
+				}
 
 			case ls:
 				if (2 == tokens.size()) {
@@ -157,13 +158,13 @@ int main() {
 			case error:
 				std::cout << "Command not found.\n";
 				break;
-				}
 			}
 		}
-
-		return 0;
 	}
+	return 0;
 }
+
+	
 
 Commands hashit(const std::string &inString) {
 	if (inString == "cd") return cd;
