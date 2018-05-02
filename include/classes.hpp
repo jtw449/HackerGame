@@ -471,7 +471,25 @@ public:
 		}
   }
   void rm(string absPath) {
-
+		// check if destination exists
+		Directory* new_folder;
+		File* new_file;
+		std::size_t found = src.rfind("/");
+		if (found == std::npos) return;
+		string relPath;
+		strncpy(relPath, absPath, found);
+		Directory* folder = validatePath(relPath);
+		strcpy(filename, (absPath+found));
+		if (folder->get_dir(filename)) {
+			// remove the dir
+			new_folder = folder->get_dir(filename);
+			folder->delete_dir(new_folder);
+		}
+		else if (folder->get_file(filename)) {
+			// move the file
+			new_file = folder->get_file(filename);
+			folder->delete_file(new_file);
+		}
   }
   string cat(string absPath) {
 		if (absPath.back() == '/') {
