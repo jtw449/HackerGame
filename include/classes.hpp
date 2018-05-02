@@ -406,22 +406,23 @@ public:
     folder->add_file(new_file);
   }
 
-  void mkdir(User* user, string absPath) {
+  bool mkdir(User* user, string absPath) {
 		if (absPath.back() == '/') {
 			absPath.pop_back();
 		}
 		string name, path;
 		separateNameFromPath(absPath, &name, &path);
     Directory* folder = validatePath(path);
-    if (!folder) return;
+    if (!folder) return false;
 		Directory new_dir = new Directory(name, folder, nullptr, user->getUsername());
 		folder.add_dir(new_dir);
+		return true;
   }
 
-  void mv(string src, string dest) {
+  bool mv(string src, string dest) {
 		// check if destination exists
 		Directory* folder = validatePath(dest);
-		if (!folder) return;
+		if (!folder) return false;
 		if (src.back() == '/') {
 			src.pop_back();
 		}
@@ -430,6 +431,7 @@ public:
 		string name, path;
 		separateNameFromPath(src, &name, &path);
 		Directory* src_folder = validatePath(path);
+		if (!src_folder) return false;
 		if (src_folder->get_dir(name)) {
 			// move the dir
 			new_folder = src_folder->get_dir(name);
@@ -442,11 +444,12 @@ public:
 			folder->add_file(new_file);
 			src_folder->delete_file(new_file);
 		}
+		return true;
   }
-  void cp(string src, string dest) {
+  bool cp(string src, string dest) {
 		// check if destination exists
 		Directory* folder = validatePath(dest);
-		if (!folder) return;
+		if (!folder) return false;
 		if (src.back() == '/') {
 			src.pop_back();
 		}
@@ -455,6 +458,7 @@ public:
 		string name, path;
 		separateNameFromPath(src, &name, &path);
 		Directory* src_folder = validatePath(path);
+		if (!src_folder) return false;
 		if (src_folder->get_dir(name)) {
 			// move the dir
 			new_folder = src_folder->get_dir(name);
@@ -465,14 +469,16 @@ public:
 			new_file = src_folder->get_file(name);
 			folder->add_file(new_file);
 		}
+		return true;
   }
-  void rm(string absPath) {
+  bool rm(string absPath) {
 		// check if destination exists
 		Directory* new_folder;
 		File* new_file;
 		string name, path;
 		separateNameFromPath(absPath, &name, &path);
 		Directory* folder = validatePath(path);
+		if (!folder) return false;
 		if (folder->get_dir(name)) {
 			// remove the dir
 			new_folder = folder->get_dir(name);
@@ -483,17 +489,19 @@ public:
 			new_file = folder->get_file(name);
 			folder->delete_file(new_file);
 		}
+		return true;
   }
   string cat(string absPath) {
 		if (absPath.back() == '/') {
 			absPath.pop_back();
 		}
-		string name, path;
+		string name, path, stringContents;
 		separateNameFromPath(absPath, &name, &path);
 		Directory* folder = validatePath(path);
-		if (!folder) return;
+		if (!folder) return stringContents;	//return an empty string on failure
 		File* file = folder->get_file(name);
-		return file->get_contents();
+		stringContents = file->get_contents();
+		return stringContents;
   }
   // void sudo(string cmd, string password) {
 	//
