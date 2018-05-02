@@ -577,10 +577,10 @@ public:
 
   }
 
-  Player(string username, string password) {
+  /*Player(string username, string password) {
     User* player = new User(username, password);
-    //addConnection(player, newServer);
-  }
+    addConnection(player, newServer);
+  }*/
 
   void serverLogin(User* newUser, Server* newServer) {
     addConnection(newUser, newServer);
@@ -597,6 +597,7 @@ public:
     if (!connectionList.empty()) {
       return std::get<0>(getCurrentConnection());
     }
+	return nullptr;
    }
 
   Server* getCurrentServer() {
