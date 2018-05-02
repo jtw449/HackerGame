@@ -60,7 +60,7 @@ int main() {
 
 	player->getCurrentUser()->setWorkingDir(server1->getRootDir());
 
-	
+	server1->mkdir(player->getCurrentUser(), "/etc");
 
 	std::cin.ignore(INT_MAX, '\n');
 
@@ -85,8 +85,7 @@ int main() {
 			switch (hashit(tokens[0])) {
 			case cd:
 				if (tokens.size() >= 2) {
-					std::cout << tokens[1];
-				}
+					server1->cd(player->getCurrentUser(), tokens[1]);
 				break;
 
 			case ls:
