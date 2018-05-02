@@ -471,7 +471,7 @@ public:
 		Directory* new_folder;
 		File* new_file;
 		string name, path;
-		separateNameFromPath(src, &name, &path);
+		separateNameFromPath(absPath, &name, &path);
 		Directory* folder = validatePath(path);
 		if (folder->get_dir(name)) {
 			// remove the dir
@@ -489,7 +489,7 @@ public:
 			absPath.pop_back();
 		}
 		string name, path;
-		separateNameFromPath(src, &name, &path);
+		separateNameFromPath(absPath, &name, &path);
 		Directory* folder = validatePath(path);
 		if (!folder) return;
 		File* file = folder->get_file(name);
