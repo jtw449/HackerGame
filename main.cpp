@@ -45,23 +45,24 @@ int main() {
 		}
 	} while (password1 != password2);
 
-	Player* player = new Player(username, password1);
+	Player* player = new Player();
+
+	User* playerUser = new User(username, password1);
 
 	std::list<User*> server1UserList;
-	server1UserList.push_back(player->getCurrentUser());
+	server1UserList.push_back(playerUser);
 
 	Server* server1 = new Server("127.0.0.1", server1UserList);
 
-	player->getCurrentUser()->setWorkingDir(server1->getRootDir());
-
 	player->serverLogin(server1UserList.front(), server1);
 
+	player->getCurrentUser()->setWorkingDir(server1->getRootDir());
 
 	std::cin.ignore(INT_MAX, '\n');
 
 	while (playing == true) {
 
-		std::cout << "[" << player->getCurrentUsername() << "@" << player->getCurrentServer()->getIP() << " " << player->getCurrentDirectoryName() << "]" << player->getSuffix() << " ";
+		std::cout << "[" << player->getCurrentUsername() << "@" << player->getCurrentServerIP() << " " << player->getCurrentDirectoryName() << "]" << player->getSuffix() << " ";
 		std::getline(std::cin, input);
 
 		vector <string> tokens;

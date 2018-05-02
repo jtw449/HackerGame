@@ -393,7 +393,6 @@ public:
         return user;
       }
     }
-		return nullptr;
   }
 
   string ls(string absPath) {
@@ -412,7 +411,6 @@ public:
       ls.append(file->getName());
       ls += '\n';
     }
-		return ls;
   }
 
   bool cd(User* user, string absPath) {
@@ -420,7 +418,6 @@ public:
     if (!folder) return false;
 
     user->setWorkingDir(folder);
-		return true;
   }
 
   bool touch(User* user, string absPath) {
@@ -435,7 +432,6 @@ public:
 
     File* new_file = new File(name, "", nullptr, user);
     folder->add_file(new_file);
-		return true;
   }
 
   bool mkdir(User* user, string absPath) {
@@ -581,10 +577,10 @@ public:
 
   }
 
-  Player(string username, string password) {
+  /*Player(string username, string password) {
     User* player = new User(username, password);
-    //addConnection(player, newServer);
-  }
+    addConnection(player, newServer);
+  }*/
 
   void serverLogin(User* newUser, Server* newServer) {
     addConnection(newUser, newServer);
@@ -601,14 +597,13 @@ public:
     if (!connectionList.empty()) {
       return std::get<0>(getCurrentConnection());
     }
-		return nullptr;
+	return nullptr;
    }
 
   Server* getCurrentServer() {
     if (!connectionList.empty()) {
       return std::get<1>(getCurrentConnection());
     }
-		return nullptr;
   }
 
   string getCurrentUsername() {
