@@ -135,7 +135,7 @@ class File {
     string getName() {
       return this->name;
     }
-	
+
     string get_contents() {
       return this->data;
     }
@@ -410,15 +410,11 @@ public:
 		if (absPath.back() == '/') {
 			absPath.pop_back();
 		}
-		std::size_t found = absPath.rfind("/");
-		if (found == string::npos) return;
-		string filename;
-		strcpy(filename, (absPath+found));
-		string relPath;
-		strncpy(relPath, absPath, found);
-    Directory* folder = validatePath(relPath);
+		string name, path;
+		separateNameFromPath(absPath, &name, &path);
+    Directory* folder = validatePath(path);
     if (!folder) return;
-		Directory new_dir = new Directory(filename, folder, nullptr, user->getUsername());
+		Directory new_dir = new Directory(name, folder, nullptr, user->getUsername());
 		folder.add_dir(new_dir);
   }
 
@@ -431,21 +427,18 @@ public:
 		}
 		Directory* new_folder;
 		File* new_file;
-		std::size_t found = src.rfind("/");
-		if (found == string::npos) return;
-		string relPath;
-		strncpy(relPath, src, found);
-		Directory* src_folder = validatePath(relPath);
-		strcpy(filename, (src+found));
-		if (src_folder->get_dir(filename)) {
+		string name, path;
+		separateNameFromPath(src, &name, &path);
+		Directory* src_folder = validatePath(path);
+		if (src_folder->get_dir(name)) {
 			// move the dir
-			new_folder = src_folder->get_dir(filename);
+			new_folder = src_folder->get_dir(name);
 			folder->add_dir(new_folder);
 			src_folder->delete_dir(new_folder);
 		}
-		else if (src_folder->get_file(filename)) {
+		else if (src_folder->get_file(name)) {
 			// move the file
-			new_file = src_folder->get_file(filename);
+			new_file = src_folder->get_file(name);
 			folder->add_file(new_file);
 			src_folder->delete_file(new_file);
 		}
@@ -459,20 +452,17 @@ public:
 		}
 		Directory* new_folder;
 		File* new_file;
-		std::size_t found = src.rfind("/");
-		if (found == string::npos) return;
-		string relPath;
-		strncpy(relPath, src, found);
-		Directory* src_folder = validatePath(relPath);
-		strcpy(filename, (src+found));
-		if (src_folder->get_dir(filename)) {
+		string name, path;
+		separateNameFromPath(src, &name, &path);
+		Directory* src_folder = validatePath(path);
+		if (src_folder->get_dir(name)) {
 			// move the dir
-			new_folder = src_folder->get_dir(filename);
+			new_folder = src_folder->get_dir(name);
 			folder->add_dir(new_folder);
 		}
-		else if (src_folder->get_file(filename)) {
+		else if (src_folder->get_file(name)) {
 			// move the file
-			new_file = src_folder->get_file(filename);
+			new_file = src_folder->get_file(name);
 			folder->add_file(new_file);
 		}
   }
@@ -480,20 +470,17 @@ public:
 		// check if destination exists
 		Directory* new_folder;
 		File* new_file;
-		std::size_t found = src.rfind("/");
-		if (found == std::npos) return;
-		string relPath;
-		strncpy(relPath, absPath, found);
-		Directory* folder = validatePath(relPath);
-		strcpy(filename, (absPath+found));
-		if (folder->get_dir(filename)) {
+		string name, path;
+		separateNameFromPath(src, &name, &path);
+		Directory* folder = validatePath(path);
+		if (folder->get_dir(name)) {
 			// remove the dir
-			new_folder = folder->get_dir(filename);
+			new_folder = folder->get_dir(name);
 			folder->delete_dir(new_folder);
 		}
-		else if (folder->get_file(filename)) {
+		else if (folder->get_file(name)) {
 			// move the file
-			new_file = folder->get_file(filename);
+			new_file = folder->get_file(name);
 			folder->delete_file(new_file);
 		}
   }
@@ -501,15 +488,11 @@ public:
 		if (absPath.back() == '/') {
 			absPath.pop_back();
 		}
-		std::size_t found = absPath.rfind("/");
-		if (found == string::npos) return;
-		string filename;
-		strcpy(filename, (absPath+found));
-		string relPath;
-		strncpy(relPath, absPath, found);
-		Directory* folder = validatePath(relPath);
+		string name, path;
+		separateNameFromPath(src, &name, &path);
+		Directory* folder = validatePath(path);
 		if (!folder) return;
-		File* file = folder->get_file(filename);
+		File* file = folder->get_file(name);
 		return file->get_contents();
   }
   // void sudo(string cmd, string password) {
