@@ -54,7 +54,7 @@ int main() {
 
 	player->getCurrentUser()->setWorkingDir(server1->getRootDir());
 
-	player->serverLogin(server1UserList.front, server1);
+	player->serverLogin(server1UserList.front(), server1);
 
 
 	std::cin.ignore(INT_MAX, '\n');
