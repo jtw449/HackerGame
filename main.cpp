@@ -84,11 +84,11 @@ int main() {
 				break;
 
 			case ls:
-				std::cout << server1.ls(tokens[1]);
+				std::cout << server1->ls(tokens[1]);
 				break;
 
 			case rm:
-				if ( server1.rm(tokens[1]) ) {
+				if ( server1->rm(tokens[1]) ) {
 					std::cout << "File deleted.\n";
 				} else {
 					std::cout << "Failed to delete.\n";

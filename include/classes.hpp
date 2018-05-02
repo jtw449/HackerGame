@@ -77,7 +77,7 @@ class User {
     }
 
     string getUsername() {
-      return username;
+      return this->username;
     }
 
     bool checkPassword(string pass) {
@@ -89,15 +89,15 @@ class User {
     }
 
     Directory* getDirectory() {
-    	return workingDir;
+    	return this->workingDir;
     }
 
     void addHistory(string command) {
-      history.push_back(command);
+      this->history.push_back(command);
     }
 
     list<string> getHistory() {
-      return history;
+      return this->history;
     }
 
     void setSuperUser(bool superUser) {
@@ -105,7 +105,7 @@ class User {
     }
 
     bool getSuperUser() {
-      return superUser;
+      return this->superUser;
     }
 };
 
