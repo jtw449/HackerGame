@@ -339,6 +339,12 @@ private:
     return curDir;
   }
 
+  void separateNameFromPath(string absPath, string* nameCallback, string* pathCallback) {
+    std::size_t base = absPath.rfind("/") + 1;
+    *nameCallback = absPath.substr(base, absPath.length() - base);
+    *path = absPath.substr(absPath.length()-name.length(), base-1);
+  }
+
 public:
   Server(string IP, std::list<User*> userList) {
     this->IP = IP;
@@ -390,10 +396,10 @@ public:
     if (absPath.back() == '/') {
       return false;
     }
-    std::size_t base = absPath.rfind("/") + 1;
-    string name = absPath.substr(base, absPath.length() - base);
+    string name, path;
+    separateNameFromPath(absPath, &name, &path);
 
-    Directory* folder = validatePath( absPath.substr(absPath.length()-name.length(), base-1) );
+    Directory* folder = validatePath(path);
     if (!folder) return false;
 
     File* new_file = new File(name, "", nullptr, user);
