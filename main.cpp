@@ -86,12 +86,13 @@ int main() {
 			case cd:
 				if (tokens.size() >= 2) {
 					server1->cd(player->getCurrentUser(), tokens[1]);
-				break;
+					break;
 
 			case ls:
 				if (2 == tokens.size()) {
 					std::cout << server1->ls(tokens[1]);
-				} else {
+				}
+				else {
 					std::cout << "Error\n";
 				}
 				break;
@@ -102,7 +103,8 @@ int main() {
 					if (server1->mkdir(player->getCurrentUser(), tokens[1])) {
 						std::cout << "Created\n";
 					}
-				} else {
+				}
+				else {
 					std::cout << "Error\n";
 				}
 				break;
@@ -112,15 +114,16 @@ int main() {
 					std::cout << "Error\n";
 					break;
 				}
-				if ( server1->rm(tokens[1]) ) {
+				if (server1->rm(tokens[1])) {
 					std::cout << "File deleted.\n";
-				} else {
+				}
+				else {
 					std::cout << "Failed to delete.\n";
 				}
 				break;
 
 			case mv:
-				
+
 				break;
 
 			case cp:
@@ -154,11 +157,12 @@ int main() {
 			case error:
 				std::cout << "Command not found.\n";
 				break;
+				}
 			}
 		}
-	}
 
-	return 0;
+		return 0;
+	}
 }
 
 Commands hashit(const std::string &inString) {
