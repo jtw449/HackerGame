@@ -414,8 +414,8 @@ public:
 		separateNameFromPath(absPath, &name, &path);
     Directory* folder = validatePath(path);
     if (!folder) return false;
-		Directory new_dir = new Directory(name, folder, nullptr, user->getUsername());
-		folder.add_dir(new_dir);
+		Directory* new_dir = new Directory(name, folder, nullptr, user);
+		folder->add_dir(new_dir);
 		return true;
   }
 
