@@ -379,6 +379,10 @@ public:
     }
   }
 
+  string getIP() {
+    return this->IP;
+  }
+
   User* connect(string username, string password) {
     for(User* user : this->Accounts) {
       if (user->getUsername() == username && user->checkPassword(password)) {
@@ -602,15 +606,15 @@ public:
     return temp.getUsername();
   }
 
-  string getCurrentServerName() {
+  string getCurrentServerIP() {
     Server temp = *std::get<1>(getCurrentConnection());
-    return temp.getServerName();
+    return temp.getIP();
   }
 
   string getCurrentDirectoryName() {
     User temp = *std::get<0>(getCurrentConnection());
     Directory tempdir = *temp.getDirectory();
-    return tempdir.getDirectoryName();
+    return tempdir.getName();
   }
 
   bool getCurrentUserRoot() {
