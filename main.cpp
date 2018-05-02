@@ -16,6 +16,7 @@ enum Commands {
 	ssh,
 	logout,
 	clear,
+	mkdir,
 	error
 };
 
@@ -55,11 +56,11 @@ int main() {
 
 	Server* server1 = new Server("127.0.0.1", server1UserList);
 
-	//server1UserList.front()->setWorkingDir(server1->getRootDir());
-
 	player->serverLogin(server1UserList.front(), server1);
 
 	player->getCurrentUser()->setWorkingDir(server1->getRootDir());
+
+	
 
 	std::cin.ignore(INT_MAX, '\n');
 
@@ -83,11 +84,17 @@ int main() {
 		if (tokens.size() >= 1) {
 			switch (hashit(tokens[0])) {
 			case cd:
-				std::cout << tokens[1];
+				if (tokens.size() >= 2) {
+					std::cout << tokens[1];
+				}				
 				break;
 
 			case ls:
 				std::cout << server1->ls(tokens[1]);
+				break;
+
+			case mkdir:
+
 				break;
 
 			case rm:
@@ -152,5 +159,6 @@ Commands hashit(const std::string &inString) {
 	if (inString == "ssh") return ssh;
 	if (inString == "logout") return logout;
 	if (inString == "clear") return clear;
+	if (inString == "mkdir") return mkdir;
 	return error;
 }
