@@ -1,3 +1,8 @@
 # IGNORE
 .DS_Store
 prog
+/.vs/slnx.sqlite
+/.vs/ProjectSettings.json
+/.vs/HackerGame Repo/v15/Browse.VC.opendb
+/.vs/HackerGame Repo/v15/Browse.VC.db
+/.vs/HackerGame Repo/v15/ipch/AutoPCH/1602efaeb3891465/MAIN.ipch
