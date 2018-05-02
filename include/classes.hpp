@@ -342,7 +342,7 @@ private:
   void separateNameFromPath(string absPath, string* nameCallback, string* pathCallback) {
     std::size_t base = absPath.rfind("/") + 1;
     *nameCallback = absPath.substr(base, absPath.length() - base);
-    *path = absPath.substr(absPath.length()-name.length(), base-1);
+    *pathCallback = absPath.substr(absPath.length()-nameCallback->length(), base-1);
   }
 
 public:
