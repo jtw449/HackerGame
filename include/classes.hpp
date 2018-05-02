@@ -383,6 +383,10 @@ public:
     return this->IP;
   }
 
+  Directory* getRootDir() {
+    return this->rootDirectory;
+  }
+
   User* connect(string username, string password) {
     for(User* user : this->Accounts) {
       if (user->getUsername() == username && user->checkPassword(password)) {
