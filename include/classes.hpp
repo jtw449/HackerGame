@@ -624,7 +624,10 @@ public:
   string getCurrentDirectoryName() {
     User temp = *std::get<0>(getCurrentConnection());
     Directory tempdir = *temp.getDirectory();
-    return tempdir.getName();
+	if (tempdir.getName() == "") {
+		return "/";
+	}
+	return tempdir.getName();
   }
 
   bool getCurrentUserRoot() {
