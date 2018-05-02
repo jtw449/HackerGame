@@ -52,7 +52,7 @@ int main() {
 
 	Server* server1 = new Server("127.0.0.1", server1UserList);
 
-	player->getCurrentUser()->setWorkingDir(server1->getRootDirectory());
+	player->getCurrentUser()->setWorkingDir(server1->getRootDir());
 
 	player->serverLogin(server1UserList.front, server1);
 
@@ -61,7 +61,7 @@ int main() {
 
 	while (playing == true) {
 
-		std::cout << "[" << player->getCurrentUsername() << "@" << player->getCurrentServerName() << " " << player->getCurrentDirectoryName() << "]" << player->getSuffix() << " ";
+		std::cout << "[" << player->getCurrentUsername() << "@" << player->getCurrentServer()->getIP() << " " << player->getCurrentDirectoryName() << "]" << player->getSuffix() << " ";
 		std::getline(std::cin, input);
 
 		vector <string> tokens;
