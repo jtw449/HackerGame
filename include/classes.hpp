@@ -3,6 +3,7 @@
 
 // include package requirements here
 #include <iostream>
+#include <utility>
 #include <list>
 #include <ctime>
 #include <string>
@@ -55,7 +56,7 @@ class User {
   private:
     string username;
     string password;
-    // Directory* workingDir;
+    Directory* workingDir;
     list<string> history;
     bool superUser = false;
 
@@ -69,23 +70,27 @@ class User {
       this->password = password;
     }
 
-    // User(string username, string password, Directory* workingDir) {
-    // 	this->username = username;
-    // 	this->password = password;
-    // 	this->workingDir = workingDir;
-    // }
+    User(string username, string password, Directory* workingDir) {
+    	this->username = username;
+    	this->password = password;
+    	this->workingDir = workingDir;
+    }
 
     string getUsername() {
       return username;
     }
 
-    // void setDirectory(Directory* workingDir) {
-    // 	this->workingDir = workingDir;
-    // }
+    bool checkPassword(string pass) {
+      return (pass == this->password);
+    }
 
-    // Directory* getDirectory() {
-    // 	return workingDir;
-    // }
+    void setWorkingDir(Directory* workingDir) {
+    	this->workingDir = workingDir;
+    }
+
+    Directory* getDirectory() {
+    	return workingDir;
+    }
 
     void addHistory(string command) {
       history.push_back(command);
@@ -112,12 +117,12 @@ class File {
     time_t access_time;
     time_t modify_time;
     time_t change_time;
-    Permissions permissions;
-    User owner;
+    Permissions* permissions;
+    User* owner;
 
   public:
     // constructor
-    File(string file_name, string data, Permissions perm_flags, User file_owner) {
+    File(string file_name, string data, Permissions* perm_flags, User* file_owner) {
       this->name = file_name;
       this->data = data;
       this->access_time = time(nullptr);
@@ -141,6 +146,11 @@ class File {
       return true;
     }
 
+    bool set_access_time(time_t time) {
+      this->access_time = time;
+      return true;
+    }
+
     bool write_data(string data) {
       this->data = data;
       this->modify_time = time(nullptr);
@@ -157,108 +167,17 @@ class File {
       return true;
     }
 
-    bool change_ownership(User new_owner) {
+    bool change_ownership(User* new_owner) {
       this->owner = new_owner;
       this->change_time = time(nullptr);
       return true;
     }
 
-    bool change_permissions(Permissions perm_flags) {
+    bool change_permissions(Permissions* perm_flags) {
       this->permissions = perm_flags;
       this->change_time = time(nullptr);
       return true;
     }
-};
-
-
-class Player {
-private:
-
-	list < pair<User*, Server*> > connectionList;
-
-	pair<User*, Server*> connectionPair;
-
-	string suffix;
-
-	void addConnection(User* user, Server* server) {
-		connectionList.push_back(make_pair(user, server));
-	}
-
-	bool removeConnection() {
-		if (connectionList.size() > 1) {
-			connectionList.erase(connectionList.end());
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-
-	pair<User*, Server*> getCurrentConnection() {
-		connectionPair = connectionList.back();
-		return connectionPair;
-	}
-
-public:
-	Player() {
-
-	}
-
-	Player(string username, string password, Directory* workingDir, Server* newServer) {
-		User* player = new User(username, password, workingDir);
-		addConnection(player, newServer);
-	}
-
-	void serverLogin(User* newUser, Server* newServer) {
-		addConnection(newUser, newServer);
-	}
-
-	bool serverLogout() {
-		if (removeConnection())
-			return true;
-		else
-			return false;
-	}
-
-	User* getCurrentUser() {
-		if (!connectionList.empty()) {
-			return get<0>(getCurrentConnection());
-	 	}
-	 }
-
-	Server* getCurrentServer() {
-		if (!connectionList.empty()) {
-			return get<1>(getCurrentConnection());
-		}
-	}
-
-	string getCurrentUsername() {
-		User temp = *get<0>(getCurrentConnection());
-		return temp.getUsername();
-	}
-
-	string getCurrentServerName() {
-		Server temp = *get<1>(getCurrentConnection());
-		return temp.getServerName();
-	}
-
-	string getCurrentDirectoryName() {
-		User temp = *get<0>(getCurrentConnection());
-		Directory tempdir = *temp.getDirectory();
-		return tempdir.getDirectoryName();
-	}
-
-	bool getCurrentUserRoot() {
-		User temp = *get<0>(getCurrentConnection());
-		return temp.getSuperUser();
-	}
-
-	string getSuffix() {
-		if (getCurrentUserRoot()) { suffix = "#"; }
-		else if (!getCurrentUserRoot()) { suffix = "$"; }
-
-		return suffix;
-	}
 };
 
 
@@ -270,13 +189,13 @@ class Directory {
     list<Directory*> sub_dirs;
     Directory* parent_dir;
     Permissions* permissions;
-    User owner;
+    User* owner;
     time_t access_time;
     time_t modify_time;
 
   public:
     // constructor
-    Directory(string d_name, Directory* parent, Permissions* perm_flags, User d_owner) {
+    Directory(string d_name, Directory* parent, Permissions* perm_flags, User* d_owner) {
       this->name = d_name;
       // don't init the files or sub_dirs, use a method later on
       this->parent_dir = parent;
@@ -288,14 +207,12 @@ class Directory {
 
     // destructor
     ~Directory() {
-      for (File file : this->files) {
+      for (File* file : this->files) {
         delete file;
       }
-      for (Directory dir : this->sub_dirs) {
+      for (Directory* dir : this->sub_dirs) {
         delete dir;
       }
-      delete this->files;
-      delete this->sub_dirs;
     }
 
     string getName() {
@@ -312,7 +229,7 @@ class Directory {
 
     bool delete_file(string filename) {
       for (File* file : this->files) {
-       if (filename == file->name) {
+       if (filename == file->getName()) {
          this->files.remove(file);
          delete file;
          return true;
@@ -321,14 +238,12 @@ class Directory {
       return false;
     }
 
-    File get_file(string filename) {
+    File* get_file(string filename) {
       // searches the directory for the specified file, returns the file if exists
       for (File* file : this->files) {
-       if (filename == file->name) {
-         // update access_time
-         file->access_time = time(nullptr);
-         return file;
-       }
+        if (filename == file->getName()) {
+          return file;
+        }
       }
       return nullptr;
     }
@@ -352,14 +267,12 @@ class Directory {
       return false;
     }
 
-    Directory get_dir(string dir_name) {
+    Directory* get_dir(string dir_name) {
       // searches the directory for the specified file, returns the file if exists
       for (Directory* dir : this->sub_dirs) {
-       if (dir_name == dir->name) {
-         // update access_time
-         dir->access_time = time(nullptr);  //probably don't want to update access time here. Should be done in the command functions in Server
-         return dir;
-       }
+        if (dir_name == dir->name) {
+          return dir;
+        }
       }
       return nullptr;
     }
@@ -383,7 +296,7 @@ class Server {
 private:
   string IP;
   Directory* rootDirectory;
-  std::list<User> Accounts;
+  std::list<User*> Accounts;
   bool SSH;
 
   vector<string>* parsePath(string absPath) {
@@ -418,32 +331,32 @@ private:
 
     Directory* curDir = this->rootDirectory;
     for (string folderName : *folderList) {
-      curDir = curDir.get_dir(folderName);
+      curDir = curDir->get_dir(folderName);
       if (!curDir) return nullptr;
     }
 
-    delete *folderList;
+    delete folderList;
     return curDir;
   }
 
 public:
-  Server(string IP, std::list<User> userList) {
-    this.IP = IP;
-    this.rootDirectory = new Directory();
-    this.accounts = userList;
-    this.SSH = true;
+  Server(string IP, std::list<User*> userList) {
+    this->IP = IP;
+    this->rootDirectory = new Directory("root", nullptr, nullptr, userList.front());
+    this->Accounts = userList;
+    this->SSH = true;
   }
   ~Server() {
     delete this->rootDirectory;
-    for(User user : this->Accounts) {
+    for(User* user : this->Accounts) {
       delete user;
     }
   }
 
   User* connect(string username, string password) {
-    for(User user : this->Accounts) {
-      if (user.username == username && user.password == password) {
-        return true;
+    for(User* user : this->Accounts) {
+      if (user->getUsername() == username && user->checkPassword(password)) {
+        return user;
       }
     }
   }
@@ -470,7 +383,7 @@ public:
     Directory* folder = validatePath(absPath);
     if (!folder) return false;
 
-    user.setWorkingDir(folder);
+    user->setWorkingDir(folder);
   }
 
   bool touch(User* user, string absPath) {
@@ -492,7 +405,7 @@ public:
 			absPath.pop_back();
 		}
 		std::size_t found = absPath.rfind("/");
-		if (found == std::npos) return;
+		if (found == string::npos) return;
 		string filename;
 		strcpy(filename, (absPath+found));
 		string relPath;
@@ -513,7 +426,7 @@ public:
 		Directory* new_folder;
 		File* new_file;
 		std::size_t found = src.rfind("/");
-		if (found == std::npos) return;
+		if (found == string::npos) return;
 		string relPath;
 		strncpy(relPath, src, found);
 		Directory* src_folder = validatePath(relPath);
@@ -541,7 +454,7 @@ public:
 		Directory* new_folder;
 		File* new_file;
 		std::size_t found = src.rfind("/");
-		if (found == std::npos) return;
+		if (found == string::npos) return;
 		string relPath;
 		strncpy(relPath, src, found);
 		Directory* src_folder = validatePath(relPath);
@@ -565,7 +478,7 @@ public:
 			absPath.pop_back();
 		}
 		std::size_t found = absPath.rfind("/");
-		if (found == std::npos) return;
+		if (found == string::npos) return;
 		string filename;
 		strcpy(filename, (absPath+found));
 		string relPath;
@@ -585,6 +498,97 @@ public:
 	//
   // }
 
+};
+
+
+class Player {
+private:
+
+  list < std::pair<User*, Server*> > connectionList;
+
+  std::pair<User*, Server*> connectionPair;
+
+  string suffix;
+
+  void addConnection(User* user, Server* server) {
+    connectionList.push_back(std::make_pair(user, server));
+  }
+
+  bool removeConnection() {
+    if (connectionList.size() > 1) {
+      connectionList.erase(connectionList.end());
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
+  std::pair<User*, Server*> getCurrentConnection() {
+    connectionPair = connectionList.back();
+    return connectionPair;
+  }
+
+public:
+  Player() {
+
+  }
+
+  Player(string username, string password, Directory* workingDir, Server* newServer) {
+    User* player = new User(username, password, workingDir);
+    addConnection(player, newServer);
+  }
+
+  void serverLogin(User* newUser, Server* newServer) {
+    addConnection(newUser, newServer);
+  }
+
+  bool serverLogout() {
+    if (removeConnection())
+      return true;
+    else
+      return false;
+  }
+
+  User* getCurrentUser() {
+    if (!connectionList.empty()) {
+      return std::get<0>(getCurrentConnection());
+    }
+   }
+
+  Server* getCurrentServer() {
+    if (!connectionList.empty()) {
+      return std::get<1>(getCurrentConnection());
+    }
+  }
+
+  string getCurrentUsername() {
+    User temp = *std::get<0>(getCurrentConnection());
+    return temp.getUsername();
+  }
+
+  string getCurrentServerName() {
+    Server temp = *std::get<1>(getCurrentConnection());
+    return temp.getServerName();
+  }
+
+  string getCurrentDirectoryName() {
+    User temp = *std::get<0>(getCurrentConnection());
+    Directory tempdir = *temp.getDirectory();
+    return tempdir.getDirectoryName();
+  }
+
+  bool getCurrentUserRoot() {
+    User temp = *std::get<0>(getCurrentConnection());
+    return temp.getSuperUser();
+  }
+
+  string getSuffix() {
+    if (getCurrentUserRoot()) { suffix = "#"; }
+    else if (!getCurrentUserRoot()) { suffix = "$"; }
+
+    return suffix;
+  }
 };
 
 #endif
