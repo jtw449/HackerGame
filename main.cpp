@@ -60,7 +60,7 @@ int main() {
 
 	player->getCurrentUser()->setWorkingDir(server1->getRootDir());
 
-	server1->mkdir(player->getCurrentUser(), "/etc");
+	//server1->mkdir(player->getCurrentUser(), "/etc");
 
 	std::cin.ignore(INT_MAX, '\n');
 

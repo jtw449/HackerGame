@@ -199,7 +199,7 @@ class Directory {
       this->name = d_name;
       // don't init the files or sub_dirs, use a method later on
       this->parent_dir = parent;
-      this->permissions = perm_flags;
+      //this->permissions = perm_flags;
       this->owner = d_owner;
       this->access_time = time(nullptr);
       this->modify_time = access_time;
