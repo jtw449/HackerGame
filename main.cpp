@@ -2,8 +2,7 @@
 // gcc -std=c++11 main.cpp classes.cpp -o prog
 
 #include "include/classes.hpp"
-
-Commands hashit(std::string const& inString);
+#include <limits.h>
 
 enum Commands {
 	cd,
@@ -19,6 +18,8 @@ enum Commands {
 	clear,
 	error
 };
+
+Commands hashit(const std::string &inString);
 
 int main() {
 	string username;
@@ -73,7 +74,7 @@ int main() {
 		if (tokens.size() >= 1) {
 			switch (hashit(tokens[0])) {
 			case cd:
-				cout << tokens[1];
+				std::cout << tokens[1];
 				break;
 
 			case ls:
@@ -126,7 +127,7 @@ int main() {
 	return 0;
 }
 
-Commands hashit(std::string const& inString) {
+Commands hashit(const std::string &inString) {
 	if (inString == "cd") return cd;
 	if (inString == "ls") return ls;
 	if (inString == "rm") return rm;
