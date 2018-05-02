@@ -238,6 +238,16 @@ class Directory {
       return false;
     }
 
+		bool remove_file(string filename) {
+			for (File* file : this->files) {
+			 if (filename == file->getName()) {
+				 this->files.remove(file);
+				 return true;
+			 }
+			}
+			return false;
+		}
+
     File* get_file(string filename) {
       // searches the directory for the specified file, returns the file if exists
       for (File* file : this->files) {
@@ -261,6 +271,16 @@ class Directory {
        if (dir_name == dir->name) {
          this->sub_dirs.remove(dir);
          delete dir;
+         return true;
+       }
+      }
+      return false;
+    }
+
+		bool remove_dir(string dir_name) {
+      for (Directory* dir : this->sub_dirs) {
+       if (dir_name == dir->name) {
+         this->sub_dirs.remove(dir);
          return true;
        }
       }
@@ -436,13 +456,13 @@ public:
 			// move the dir
 			new_folder = src_folder->get_dir(name);
 			folder->add_dir(new_folder);
-			src_folder->delete_dir(new_folder);
+			src_folder->remove_dir(new_folder->getName());
 		}
 		else if (src_folder->get_file(name)) {
 			// move the file
 			new_file = src_folder->get_file(name);
 			folder->add_file(new_file);
-			src_folder->delete_file(new_file);
+			src_folder->remove_file(new_file->getName());
 		}
 		return true;
   }
@@ -482,12 +502,12 @@ public:
 		if (folder->get_dir(name)) {
 			// remove the dir
 			new_folder = folder->get_dir(name);
-			folder->delete_dir(new_folder);
+			folder->delete_dir(new_folder->getName());
 		}
 		else if (folder->get_file(name)) {
 			// move the file
 			new_file = folder->get_file(name);
-			folder->delete_file(new_file);
+			folder->delete_file(new_file->getName());
 		}
 		return true;
   }
