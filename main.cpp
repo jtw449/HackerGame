@@ -90,7 +90,11 @@ int main() {
 				break;
 
 			case ls:
-				std::cout << server1->ls(tokens[1]);
+				if (2 == tokens.size()) {
+					std::cout << server1->ls(tokens[1]);
+				} else {
+					std::cout << "Error\n";
+				}
 				break;
 
 			case mkdir:
@@ -98,6 +102,10 @@ int main() {
 				break;
 
 			case rm:
+				if (2 != tokens.size()) {
+					std::cout << "Error\n";
+					break;
+				}
 				if ( server1->rm(tokens[1]) ) {
 					std::cout << "File deleted.\n";
 				} else {

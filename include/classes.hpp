@@ -403,7 +403,7 @@ public:
     list<Directory*> dirs = folder->get_sub_dirs();
     list<File*> files = folder->get_files();
 
-    string ls = "";
+    string ls;
     for (Directory* dir : dirs) {
       ls.append(dir->getName());
       ls += "/\n";
