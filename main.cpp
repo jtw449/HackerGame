@@ -73,7 +73,7 @@ int main() {
 		if (tokens.size() >= 1) {
 			switch (hashit(tokens[0])) {
 			case cd:
-				//cout << tokens[1];
+				cout << tokens[1];
 				break;
 
 			case ls:
