@@ -45,12 +45,17 @@ int main() {
 		}
 	} while (password1 != password2);
 
+	Player* player = new Player(username, password1);
 
-	Server* homeServer = new Server("Home");
+	std::list<User*> server1UserList;
+	server1UserList.push_back(player->getCurrentUser());
 
-	Directory* thisIsAPlaceHolder = new Directory();
+	Server* server1 = new Server("127.0.0.1", server1UserList);
 
-	Player* player = new Player(username, password1, thisIsAPlaceHolder, homeServer);
+	player->getCurrentUser()->setWorkingDir(server1->getRootDirectory());
+
+	player->serverLogin(server1UserList.front, server1);
+
 
 	std::cin.ignore(INT_MAX, '\n');
 
