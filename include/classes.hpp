@@ -549,9 +549,9 @@ public:
 
   }
 
-  Player(string username, string password, Directory* workingDir, Server* newServer) {
-    User* player = new User(username, password, workingDir);
-    addConnection(player, newServer);
+  Player(string username, string password) {
+    User* player = new User(username, password);
+    //addConnection(player, newServer);
   }
 
   void serverLogin(User* newUser, Server* newServer) {
