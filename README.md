@@ -37,6 +37,8 @@ have been possible for us to complete this project.
 
 [Non Functional Requirements](requirements/nonFunctionalRequirements.md)
 
+[Usage](usage.md)
+
 ### VIDEO DEMO
 
 soon come
