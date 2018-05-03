@@ -35,7 +35,7 @@ have been possible for us to complete this project.
 
 [Object Drafts](requirements/objects.md)
 
-[Non Functional Requirements](requirements/nonFunctionalRequirements.md)
+[Non-Functional Requirements](requirements/nonFunctionalRequirements.md)
 
 [Usage](usage.md)
 
