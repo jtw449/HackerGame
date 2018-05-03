@@ -439,7 +439,7 @@ public:
     Directory* folder = validatePath(path);
     if (!folder) return false;
 
-    File* new_file = new File(name, "", nullptr, user);
+    File* new_file = new File(name, "<Temporary File Data>\n", nullptr, user);
     folder->add_file(new_file);
 		return true;
   }
@@ -532,12 +532,12 @@ public:
   }
   string cat(string absPath) {
 		if (absPath.back() == '/') {
-			absPath.pop_back();
+			return "Error\n";
 		}
-		string name, path, stringContents;
+		string name, path, stringContents = "Error\n";
 		separateNameFromPath(absPath, &name, &path);
 		Directory* folder = validatePath(path);
-		if (!folder) return stringContents;	//return an empty string on failure
+		if (!folder) return stringContents;
 		File* file = folder->get_file(name);
 		stringContents = file->get_contents();
 		return stringContents;

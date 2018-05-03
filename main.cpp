@@ -123,8 +123,7 @@ int main() {
 				}
 				if (server1->rm(tokens[1])) {
 					std::cout << "File deleted.\n";
-				}
-				else {
+				} else {
 					std::cout << "Failed to delete.\n";
 				}
 				break;
@@ -138,11 +137,15 @@ int main() {
 				break;
 
 			case touch:
-
+				if (server1->touch(player->getCurrentUser(), tokens[1])) {
+					std::cout << "File created.\n";
+				} else {
+					std::cout << "Failed to create.\n";
+				}
 				break;
 
 			case cat:
-
+				std::cout << server1->cat(tokens[1]);
 				break;
 
 			case su:
