@@ -329,7 +329,7 @@ private:
     vector<string>* nameList = new vector<string>();
     std::size_t base = 1, next = 0;
     next = absPath.find('/', base);
-
+	
     //iterate through string and push folder names onto end of vector
     while(next != string::npos) {
       nameList->push_back( absPath.substr(base, next-base) );
@@ -347,13 +347,13 @@ private:
     if (absPath.back() != '/') return nullptr;
 	
     vector<string>* folderList = parsePath(absPath);	
-    if (!folderList || folderList->empty()) std::cout << "No folder list \n"; return nullptr;
+    if (!folderList || folderList->empty()) return nullptr;
 	
 
     Directory* curDir = this->rootDirectory;
     for (string folderName : *folderList) {
       curDir = curDir->get_dir(folderName);
-      if (!curDir) return nullptr;
+      //if (!curDir) return nullptr;
     }
 
     // delete folderList;
