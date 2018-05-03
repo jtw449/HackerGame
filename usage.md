@@ -14,12 +14,12 @@ terminal:
 * ls 'absolute path'
   * Lists the contents of the specified path
 * cat 'absolute path'
-** Print the contents of the file contained at the end of the absolute path
+  * Print the contents of the file contained at the end of the absolute path
 * touch 'absolute path'
-** Updates the last access time of the specified path
+  * Updates the last access time of the specified path
 * mkdir 'absolute path'
-** Creates a new, empty directory at the end of the specified path
+  * Creates a new, empty directory at the end of the specified path
 * rm 'absolute path'
-** Deletes the item contained at the end of the specified path
+  * Deletes the item contained at the end of the specified path
 * clear 'absolute path'
-** Clears the terminal screen
+  * Clears the terminal screen
