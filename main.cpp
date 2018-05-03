@@ -107,6 +107,8 @@ int main() {
 					std::cout << "Creating...\n";
 					if (server1->mkdir(player->getCurrentUser(), tokens[1])) {
 						std::cout << "Created\n";
+					} else {
+						std::cout << "Error creating directory\n";
 					}
 				}
 				else {
