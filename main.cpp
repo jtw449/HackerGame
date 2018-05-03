@@ -85,9 +85,13 @@ int main() {
 			switch (hashit(tokens[0])) {
 			case cd:
 				if (tokens.size() >= 2) {
-					server1->cd(player->getCurrentUser(), tokens[1]);
-					break;
+					if (server1->cd(player->getCurrentUser(), tokens[1])) {
+						
+					}
+					else std::cout << "Directory not found\n";
+					
 				}
+				break;
 
 			case ls:
 				if (2 == tokens.size()) {
