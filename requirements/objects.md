@@ -69,7 +69,3 @@ Commands will vary between servers.
 
 Commands can be virtually executed via stdin. This should mimic the actual
 execution of command line tools, such as ls, mkdir, etc...
-* Will discuss more commands in detail later
-* This is more of a 'table' than an object
-
-### More to come...
