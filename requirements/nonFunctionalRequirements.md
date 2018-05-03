@@ -13,7 +13,3 @@ The application will be run locally on the users computer.
 ## Operating System
 
 The application will be built to run on any Linux distribution.
-
-### More to come...
-
-https://discord.gg/6U74Xxr
