@@ -321,9 +321,9 @@ private:
 
   vector<string>* parsePath(string absPath) {
     //check absPath for invalid chars
-    if(absPath.find('\"') || absPath.find('\'') || absPath.find('\n') || absPath.find('\\')) {
-      return nullptr;
-    }
+    // if(absPath.find('\"') || absPath.find('\'') || absPath.find('\n') || absPath.find('\\')) {
+    //   return nullptr;
+    // }  //segfaults ???
 
     //setup for absPath parsing
     vector<string>* nameList = new vector<string>();
@@ -342,7 +342,7 @@ private:
 
   //only send the path portion to this function, WITH a trailing '/' but without a trailing filename
   Directory* validatePath(string absPath) {
-    if (absPath.empty()) return this->rootDirectory;
+    if (absPath == "/") return this->rootDirectory;
     if (absPath.at(0) != '/') return nullptr;
     if (absPath.back() != '/') return nullptr;
 
@@ -362,7 +362,7 @@ private:
   void separateNameFromPath(string absPath, string* nameCallback, string* pathCallback) {
     std::size_t base = absPath.rfind("/") + 1;
     *nameCallback = absPath.substr(base, absPath.length() - base);
-    *pathCallback = absPath.substr(absPath.length()-nameCallback->length(), base-1);
+    *pathCallback = absPath.substr(0, absPath.length()-nameCallback->length());
   }
 
 public:
@@ -444,7 +444,8 @@ public:
   }
 
   bool mkdir(User* user, string absPath) {
-		if (absPath.back() == '/') {
+		if (absPath == "/") return false;
+    if (absPath.back() == '/') {
 			absPath.pop_back();
 		}
 		string name, path;
