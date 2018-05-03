@@ -345,9 +345,10 @@ private:
     if (absPath == "/") return this->rootDirectory;
     if (absPath.at(0) != '/') return nullptr;
     if (absPath.back() != '/') return nullptr;
-
-    vector<string>* folderList = parsePath(absPath);
-    if (!folderList || folderList->empty()) return nullptr;
+	
+    vector<string>* folderList = parsePath(absPath);	
+    if (!folderList || folderList->empty()) std::cout << "No folder list \n"; return nullptr;
+	
 
     Directory* curDir = this->rootDirectory;
     for (string folderName : *folderList) {
