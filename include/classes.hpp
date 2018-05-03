@@ -397,7 +397,12 @@ public:
   }
 
   string ls(string absPath) {
-    Directory* folder = validatePath(absPath);
+    Directory* folder;
+    if (absPath == "/") {
+      folder = this->rootDirectory;
+    } else {
+      folder = validatePath(absPath);
+    }
     if (!folder) return "";
 
     list<Directory*> dirs = folder->get_sub_dirs();
@@ -405,14 +410,12 @@ public:
 
     string ls;
     for (Directory* dir : dirs) {
-      std::cout << dir->getName() << "/\n";
-      // ls.append(dir->getName());
-      // ls += "/\n";
+      ls.append(dir->getName());
+      ls += "/\n";
     }
     for (File* file : files) {
-      std::cout << file->getName() << std::endl;
-      // ls.append(file->getName());
-      // ls += '\n';
+      ls.append(file->getName());
+      ls += '\n';
     }
 		return ls;
   }
