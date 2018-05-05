@@ -41,5 +41,6 @@ have been possible for us to complete this project.
 
 ### VIDEO DEMO
 Click image to play video:
+
 [![Demo Video](https://img.youtube.com/vi/ARJPaPfVmUc/0.jpg)](https://youtu.be/ARJPaPfVmUc)
 
